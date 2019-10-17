@@ -1,0 +1,19 @@
+<html>
+    <form action="/action3" method="POST">
+        {% for item in results %}
+        <!-- <input name="message" rows="10" cols="200" value="{{ item }}" placeholder="{{ item }}" size="500"> -->
+        {%for key in item%}
+            {%if((item[key]) is not mapping )%}
+            <p><input name={{key}} value={{key}} placeholder="{{key}}"> <input name={{item[key]}} value={{item[key]}} placeholder="{{item[key]}}"> </p>
+            {%else%}
+            <p>{{key}}</p>
+            {% for k, v in item[key].items() %}
+            <p><input name={{k}} value={{k}} placeholder="{{k}}"> <input name={{v}} value={{v}} placeholder="{{v}}"></p>
+            {%endfor%}
+		{%endif%}
+	    {%endfor%}
+        {%endfor%}
+        
+        <button type="submit"> Update  </button>
+    </form>
+</html>
