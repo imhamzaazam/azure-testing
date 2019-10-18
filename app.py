@@ -60,58 +60,53 @@ def index():
     #         else: 
     #             #print(i, ":" , item[i])
     #             mylist.append([i, item[i]])
-    for item in results: 
-        for key in item:
-            if(type(item[key]) is not dict):
-                print(key, item[key])
-            else: 
-                print(key)
-                for k, v in item[key].items():
-                    print(k, v)
+    #for item in results: 
+    #    for key in item:
+    #        if(type(item[key]) is not dict):
+                #print(key, item[key])
+    #        else: 
+                #print(key)
+                #for k, v in item[key].items():
+    #                print(k, v)
     return render_template("index.html", results=results, mylist=mylist, counter=counter)
 
 
 @app.route("/update")
 def update ():
     id=request.values.get("_id")
+    key=request.args.get('key')
+    item=request.args.get('item')
+    #print(key)
+    #print(item)
     select_query = {
     "query": f"SELECT * from c where c.id=\"{id}\""  
     }   
     results = client.QueryItems(CONTAINER_LINK, select_query, FEEDOPTIONS)
-    
-    return render_template('update.html', id=id, results=results)
+    for x in results: 
+        x["summary"] = "bc"
+    return render_template('update.html', id=id, results=results, key=key, item=item)
 
 @app.route("/action3", methods=['POST'])
 def action3 ():
-	name = request.form.get("message")
-    #client.UpsertItem(CONTAINER_LINK, {"id": "pest"})
-    s = name.replace("\'\"", "\"") 
-    s = s.replace("\"\'", "\"")
-    s = s.replace("\'", "\"")
-    print(s)
-    
-    temp = json.loads(s) 
-    #print(name)
-    
-    #json_acceptable_string = s.replace("'", """)
-    #d = json.loads(json_acceptable_string)
+	#Updating a Task with various references
+	#name=request.form.get("message")
+    # client.UpsertItem(CONTAINER_LINK, name)
+    #name = request.form.get("message")
+    results = client.QueryItems(CONTAINER_LINK, QUERY, FEEDOPTIONS)
+    key = request.form.get("key")
+    item = request.form.get("item")
+    id=request.form.get("id")
+    sid = request.form.get("sid")
 
-    print(type(temp))
-    #print(type(d))
-    #d = json.loads(ini_string)
-    #d = {"id" : "bcd"}
-    
-    client.UpsertItem(CONTAINER_LINK, temp)
+    if sid is None:
+        for i in results:
+            if i["id"] == id:
+                i[key] = item
+                client.UpsertItem(CONTAINER_LINK, i)
+
+    else:
+        for i in results:
+            if i["id"] == id:
+                i[sid][key] = item
+                client.UpsertItem(CONTAINER_LINK, i)
     return redirect("/")
-      
-
-# @app.route("/action3", methods=['POST'])
-# def action3 ():
-# 	#Updating a Task with various references
-# 	name=request.values.get("name")
-# 	desc=request.values.get("desc")
-# 	date=request.values.get("date")
-# 	pr=request.values.get("pr")
-# 	id=request.values.get("_id")
-# 	todos.update({"_id":ObjectId(id)}, {'$set':{ "name":name, "desc":desc, "date":date, "pr":pr }})
-# 	return redirect("/")
