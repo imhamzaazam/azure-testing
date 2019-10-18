@@ -1,21 +1,13 @@
 <html>
     <form action="/action3" method="POST">
-        {% for item in results %}
-        <!-- <input name="message" rows="10" cols="200" value="{{ item }}" placeholder="{{ item }}" size="500"> -->
-        {%for key in item%}
-            {%if((item[key]) is not mapping )%}
-            <p><input name={{key}} value={{key}} placeholder="{{key}}"> <input name={{item[key]}} value={{item[key]}} placeholder="{{item[key]}}"> </p>
-            {%else%}
-            <p>{{key}}</p>
-            {% for k, v in item[key].items() %}
-            <p><input name={{k}} value={{k}} placeholder="{{k}}"> <input name={{v}} value={{v}} placeholder="{{v}}"></p>
-            {%endfor%}
-		{%endif%}
-	    {%endfor%}
-        {%endfor%}
+            <p>ID: <input name=id value={{ request.args.get('_id') }} readonly/> </p>
+            <input name=sid value={{ request.args.get('sid') }} hidden />
+
+            <p><input name=key value={{key}} placeholder="{{key}}" readonly style= display: inline; border: 0;width: auto;> <input name=item value={{item}} placeholder="{{item}}"> </p>
         
-       
-        <button type="submit"> Update  </button>
+            <input name=dict value={{ request.args.get('dict') }} hidden/>
+            
+         <button type="submit"> Update  </button>
        
     </form>
 </html>
