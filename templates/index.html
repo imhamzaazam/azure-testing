@@ -17,16 +17,18 @@
 	{%for item in results%} 
 	{%for key in item%}
 		{%if((item[key]) is not mapping )%}
-			<p>{{key}} : {{item[key]}}</p>
+			<p>{{key}} : {{item[key]}} <a href="./update?_id={{ item['id'] }}&key={{key}}&item={{item[key]}}&dict=false"><button type="submit">Edit</button></a></p>
+			
+			
 		{%else%} 
 			{{key}}
 			{% for k, v in item[key].items() %}
-				<p>{{k}} : {{v}} </p>
+				<p>{{k}} : {{v}}  <a href="./update?_id={{ item['id'] }}&key={{k}}&item={{v}}&dict=true&sid={{key}}"><button type="submit">Edit</button></a></p>
 			{%endfor%}
 		{%endif%}
 	{%endfor%}
-	<a href="./update?_id={{ item['id'] }}"><button type="submit">Edit</button></a>
-	
+	<!-- <a href="./update?_id={{ item['id'] }}"><button type="submit">Edit</button></a>
+	 -->
 	{% endfor %}
 	
 	
